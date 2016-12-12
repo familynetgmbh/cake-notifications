@@ -20,6 +20,7 @@ class PushMessageTransport extends Transport {
         parent::__construct($config);
         $keys = Configure::read('Notifications.transports.push_message');
         ParseClient::initialize( $keys['app_id'], $keys['rest_key'], $keys['master_key'] );
+        ParseClient::setServerURL($keys['host_name'], '1');
     }
 
 /**

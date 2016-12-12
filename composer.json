@@ -8,7 +8,7 @@
     },
     "require": {
         "cakephp/plugin-installer": "*",
-        "parse/php-sdk": "1.0.*"
+        "parse/php-sdk": "1.2.*"
     },
     "require-dev": {
         "phpunit/phpunit": "*",
