@@ -43,7 +43,7 @@ abstract class Transport {
     public static function factory($type, array $config = []) {
         $map = [
             'email' => 'Notifications\Transport\EmailTransport',
-            'push_message' => 'Notifications\Transport\PushMessageTransport',
+            'push_message' => 'Notifications\Transport\PushMessageByFirebaseTransport',
             'sms' => 'Notifications\Transport\SmsTransport',
             'hipchat' => 'Notifications\Transport\HipChatTransport'
         ];
