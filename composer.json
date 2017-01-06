@@ -1,5 +1,5 @@
 {
-    "name": "codekanzlei/cake-notifications",
+    "name": "familynetgmbh/cake-notifications",
     "description": "CakePHP3 Notifications Plugin",
     "license": "MIT",
     "type": "cakephp-plugin",
@@ -7,8 +7,7 @@
         "installer-name": "Notifications"
     },
     "require": {
-        "cakephp/plugin-installer": "*",
-        "parse/php-sdk": "1.0.*"
+        "cakephp/plugin-installer": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "*",

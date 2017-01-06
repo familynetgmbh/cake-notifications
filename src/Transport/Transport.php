@@ -28,8 +28,7 @@ abstract class Transport {
  * @param User $user The recipient user
  * @param Notification $notification the notification to be sent
  * @param NotificationContent $content the content
- * @return mixed    should return somthing == true on success
- *                  and something == false on failure
+ * @return mixed
  */
     abstract public function sendNotification(User $user, Notification $notification, NotificationContent $content);
 
@@ -44,7 +43,7 @@ abstract class Transport {
     public static function factory($type, array $config = []) {
         $map = [
             'email' => 'Notifications\Transport\EmailTransport',
-            'push_message' => 'Notifications\Transport\PushMessageTransport',
+            'push_message' => 'Notifications\Transport\PushMessageByFirebaseTransport',
             'sms' => 'Notifications\Transport\SmsTransport',
             'hipchat' => 'Notifications\Transport\HipChatTransport'
         ];
