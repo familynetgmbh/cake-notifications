@@ -44,9 +44,9 @@ class SmsTransport extends Transport {
                 $phone = substr($phone, 2);
             }
             $maxSmsPerMessage = isset($notification->transport_config['maxSmsPerMessage']) ? $notification->transport_config['maxSmsPerMessage'] : $this->_config['defaultMaxSmsPerMessage'];
-            $test = Configure::read('debug');
+            //$test = Configure::read('debug');
             // if you need to send SMS in development, uncomment next line
-            // $test = false;
+            $test = false;
             $text = $content->render('sms', $notification);
             $message  = new \WebSmsCom_TextMessage([$phone], $text);
 
