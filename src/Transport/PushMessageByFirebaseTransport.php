@@ -42,7 +42,8 @@ private static $ApiAccessKey;
         $registrationIds=$user->device_token;
         $msg = array
           (
-		'body' 	=> $alert
+		'body' 	=> $alert,
+		'sound'	=> 'default'
           );
 	     $fields = array
 			(
