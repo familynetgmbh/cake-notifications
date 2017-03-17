@@ -312,6 +312,9 @@ class NotificationQueueTable extends Table
     {
         $transport = Transport::factory($notification->transport, $transportConfig);
         $user = $this->RecipientUsers->get($notification->recipient_user_id);
+        if ($user->status == 3){
+            return true;
+        }
         $model = TableRegistry::get('Notifications.NotificationContents');
         $content = $model->getByIdentifier($notification->notification_identifier, $notification->locale);
 
