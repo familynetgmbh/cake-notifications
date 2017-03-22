@@ -201,8 +201,8 @@ class NotificationQueueTable extends Table
             'sent' => false,
             'OR' => [
                 'send_after IS' => null,
-                'send_after <=' => Time::now(),
-            ],
+                ['send_after <=' => Time::now(),'send_after >=' => Time::parse( '-1 hour' )]
+            ]
         ]);
         $query->order(['created' => 'ASC']);
         $query->limit($size);
