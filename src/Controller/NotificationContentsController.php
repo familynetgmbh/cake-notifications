@@ -111,5 +111,35 @@ class NotificationContentsController extends AppController {
         }
         $this->set(compact('translations', 'transports', 'supportedLanguages'));
     }
+    
+/**
+ * Add Locale
+ *
+ * @return void
+ */    
+    public function addLocale() {
+        $languages = Configure::read('Notifications.supported_languages');
+        $defaultLanguage = Configure::read('Notifications.default_language');
+        $translate = [];
+        foreach ($languages as $locale => $languageDescription) {
+            $this->NotificationContents->locale($locale);
+            $notificationContent = $this->NotificationContents->newEntity();
+            $translate[$locale] = $notificationContent;
+        }
+        $transports = Configure::read('Notifications.transports');
 
+        if ($this->request->is('post')) {
+            $currentLocale = empty($this->request->data['locale']) ? $defaultLanguage : $this->request->data['locale'];
+            $this->NotificationContents->locale($currentLocale);
+            $notificationContent = $this->NotificationContents->patchEntity($translate[$currentLocale], $this->request->data);
+            if ($this->NotificationContents->save($notificationContent)) {
+                return $this->redirect(['action' => 'index']);
+            } else {
+                $this->Flash->error(__d('notifications', 'notification_content.crud.validation_failed'));
+            }
+        }
+        if (empty($this->request->data['locale'])) {
+            $this->request->data['locale'] = $defaultLanguage;
+        }
+    }       
 }
