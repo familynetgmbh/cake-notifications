@@ -192,7 +192,7 @@ class NotificationQueueTable extends Table
      * @param int $size     Limit of notifications
      * @return array
      */
-    public function getBatch($size = 10)
+    public function getBatchOld($size = 10)
     {
         $query = $this->find();
         $query->where([
@@ -218,6 +218,57 @@ class NotificationQueueTable extends Table
 
         return $batch->toArray();
     }
+    
+    /**
+     * Returns a list of queued notifications that need to be sent
+     *
+     * @param int $size     Limit of notifications
+     * @return array
+     */
+    public function getBatch($size = 10)
+    {
+        $query = $this->find()
+                      ->where([
+                            'locked' => false,
+                            'send_tries <' => $this->getMaxSendTries(),
+                            'sent' => false])
+                      ->order(['created' => 'ASC'])
+                      ->limit(100)
+                      ->toArray();
+        $timeZone= Configure::read('Config.timezone');                      
+        $counter=0;                      
+        foreach ($query as $key => $item) {
+            if($counter <= $size){
+                if(!empty($item->send_after)){
+                    $sendAfter = $item->send_after;
+                    if(!empty($item->time_offset)){
+                        $timeZone= $item->time_offset;     
+                    }
+                    //$sendAfter->setTimeZone(new \DateTimeZone($timeZone));
+                    $nowDate = Time::now()->setTimeZone(new \DateTimeZone($timeZone));
+                    if($sendAfter < $nowDate){
+                        $ids[] = $item->id;
+                        $counter++;        
+                    }    
+                }
+                else{
+                    $ids[] = $item->id;
+                    $counter++;  
+                }                
+            }
+            else{
+                break;
+            }                
+        }
+                              
+        if (!empty($ids)){
+            $batch = $this->find()
+                          ->where(['id IN' => $ids])
+                          ->toArray();
+            $this->lock($ids);                                                      
+        }              
+        return  $batch;                     
+    }      
 
     /**
      * Returns the maximum number of send tries for a notification.

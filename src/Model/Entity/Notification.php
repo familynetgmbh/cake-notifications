@@ -28,7 +28,8 @@ class Notification extends Entity
         'seen' => true,
 		'debug' => true,
 		'recipient_user' => true,
-		'created' => true
+		'created' => true,
+        'time_offset' => true
 	];
 
     /**
