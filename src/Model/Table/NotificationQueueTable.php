@@ -94,6 +94,7 @@ class NotificationQueueTable extends Table
             'send_tries' => 0,
             'sent' => 0,
             'send_after' => null,
+            'time_offset' => null,
             'notification_identifier' => $identifier,
         ], $data);
 
@@ -240,11 +241,12 @@ class NotificationQueueTable extends Table
         foreach ($query as $key => $item) {
             if($counter <= $size){
                 if(!empty($item->send_after)){
-                    $sendAfter = $item->send_after;
                     if(!empty($item->time_offset)){
                         $timeZone= $item->time_offset;     
                     }
+                    //$sendAfter = $item->send_after;
                     //$sendAfter->setTimeZone(new \DateTimeZone($timeZone));
+                    $sendAfter = new Time($item->send_after->i18nFormat('yyyy-MM-dd HH:mm:ss'), $timeZone); 
                     $nowDate = Time::now()->setTimeZone(new \DateTimeZone($timeZone));
                     if($sendAfter < $nowDate){
                         $ids[] = $item->id;
