@@ -233,7 +233,7 @@ class NotificationQueueTable extends Table
                             'locked' => false,
                             'send_tries <' => $this->getMaxSendTries(),
                             'sent' => false])
-                      ->order(['created' => 'ASC'])
+                      ->order(['send_after' => 'ASC'])
                       ->limit(100)
                       ->toArray();
         $timeZone= Configure::read('Config.timezone');                      
@@ -247,7 +247,10 @@ class NotificationQueueTable extends Table
                     //$sendAfter = $item->send_after;
                     //$sendAfter->setTimeZone(new \DateTimeZone($timeZone));
                     $sendAfter = new Time($item->send_after->i18nFormat('yyyy-MM-dd HH:mm:ss'), $timeZone); 
-                    $nowDate = Time::now()->setTimeZone(new \DateTimeZone($timeZone));
+                    $nowDate = Time::now();
+                    $timestamp = $nowDate->getTimestamp();
+                    $nowDate->setTimezone($timeZone);
+                    $nowDate->setTimestamp($timestamp);		
                     if($sendAfter < $nowDate){
                         $ids[] = $item->id;
                         $counter++;        
