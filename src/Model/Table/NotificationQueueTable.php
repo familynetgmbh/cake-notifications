@@ -246,7 +246,7 @@ class NotificationQueueTable extends Table
                     }
                     //$sendAfter = $item->send_after;
                     //$sendAfter->setTimeZone(new \DateTimeZone($timeZone));
-                    $sendAfter = new Time($item->send_after->i18nFormat('yyyy-MM-dd HH:mm:ss'), $timeZone); 
+                    $sendAfter = new Time($item->send_after->format('Y-m-d H:i:s'), $timeZone); 
                     $nowDate = Time::now();
                     $timestamp = $nowDate->getTimestamp();
                     $nowDate->setTimezone($timeZone);
